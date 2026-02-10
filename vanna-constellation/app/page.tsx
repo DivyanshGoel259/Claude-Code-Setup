@@ -9,13 +9,13 @@ import CreditCardSection from "@/components/sections/CreditCardSection";
 import SocialProofSection from "@/components/sections/SocialProofSection";
 import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/layout/Footer";
-import HeroSection from "@/components/sections/HeroSection";
+import HeroSectionV2 from "@/components/sections/HeroSectionV2";
 
 export default function Home() {
   return (
     <main className="min-h-screen overflow-x-hidden">
       <Navbar />
-      <HeroSection />
+      <HeroSectionV2 />
       <CalculatorSection />
       <FlowSection />
       <DashboardSection />
