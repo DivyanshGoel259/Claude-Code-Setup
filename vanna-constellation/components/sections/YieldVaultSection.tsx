@@ -8,6 +8,12 @@
 
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import dynamic from 'next/dynamic';
+
+const ThreeBackground = dynamic(() => import('./ThreeBackground'), {
+  ssr: false,
+  loading: () => <div className="absolute inset-0 bg-transparent" />,
+});
 
 interface YieldBar {
   label: string;
@@ -187,7 +193,12 @@ export default function YieldVaultSection() {
       className="relative py-24 sm:py-32 overflow-hidden"
       style={{ backgroundColor: 'var(--background)' }}
     >
-      <div className="max-w-7xl mx-auto px-6">
+      {/* Three.js Animated Background */}
+      <div className="absolute inset-0 overflow-hidden opacity-20 dark:opacity-30 pointer-events-none">
+        <ThreeBackground />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
         {/* Header */}
         <motion.div
           className="text-center mb-16"

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * Section 9: Social Proof Engine - Traction & Trust Section
@@ -7,9 +7,15 @@
  * Row 3: Integration bento grid with hover effects
  */
 
-import { useRef } from 'react';
-import { motion, useInView, useSpring, useTransform } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useRef } from "react";
+import { motion, useInView, useSpring, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+
+const ThreeBackground = dynamic(() => import("./ThreeBackground"), {
+  ssr: false,
+  loading: () => <div className="absolute inset-0 bg-transparent" />,
+});
 
 /* ── Animated Counter ───────────────────────────────────────────── */
 
@@ -28,10 +34,10 @@ function AnimatedCounter({
 }) {
   const spring = useSpring(0, { stiffness: 40, damping: 20 });
   const display = useTransform(spring, (v) => Math.floor(v).toLocaleString());
-  const [value, setValue] = useState('0');
+  const [value, setValue] = useState("0");
 
   useEffect(() => {
-    const unsubscribe = display.on('change', (v) => setValue(v));
+    const unsubscribe = display.on("change", (v) => setValue(v));
     return unsubscribe;
   }, [display]);
 
@@ -44,7 +50,9 @@ function AnimatedCounter({
 
   return (
     <span className="text-h4 text-gradient font-mono block">
-      {prefix}{value}{suffix}
+      {prefix}
+      {value}
+      {suffix}
     </span>
   );
 }
@@ -52,34 +60,34 @@ function AnimatedCounter({
 /* ── Metrics ────────────────────────────────────────────────────── */
 
 const metrics = [
-  { value: 350, prefix: '$', suffix: 'K+', label: 'Raised' },
-  { value: 40, prefix: '', suffix: 'K+', label: 'Subscribers' },
-  { value: 2, prefix: '', suffix: 'M+', label: 'Users' },
-  { value: 15, prefix: '', suffix: '+', label: 'Integrations' },
+  { value: 350, prefix: "$", suffix: "K+", label: "Raised" },
+  { value: 40, prefix: "", suffix: "K+", label: "Subscribers" },
+  { value: 2, prefix: "", suffix: "M+", label: "Users" },
+  { value: 15, prefix: "", suffix: "+", label: "Integrations" },
 ];
 
 /* ── Partners ───────────────────────────────────────────────────── */
 
 const partnersRow1 = [
-  'Stellar Foundation',
-  'Optimism',
-  'Base',
-  'Pivot Ventures',
-  'Draper University',
-  'Gitcoin',
-  'Arbitrum',
-  'Coinbase Ventures',
+  "Stellar Foundation",
+  "Optimism",
+  "Base",
+  "Pivot Ventures",
+  "Draper University",
+  "Gitcoin",
+  "Arbitrum",
+  "Coinbase Ventures",
 ];
 
 const partnersRow2 = [
-  'Aave',
-  'Uniswap',
-  'Hyperliquid',
-  'Pendle',
-  'GMX',
-  'Morpho',
-  'dYdX',
-  'Compound',
+  "Aave",
+  "Uniswap",
+  "Hyperliquid",
+  "Pendle",
+  "GMX",
+  "Morpho",
+  "dYdX",
+  "Compound",
 ];
 
 function PartnerLogo({ name }: { name: string }) {
@@ -87,22 +95,22 @@ function PartnerLogo({ name }: { name: string }) {
     <div
       className="inline-flex items-center gap-2 px-6 py-3 mx-3 rounded-xl shrink-0 transition-all duration-300 hover:scale-105 group"
       style={{
-        backgroundColor: 'var(--card-bg)',
-        border: '1px solid var(--card-border)',
+        backgroundColor: "var(--card-bg)",
+        border: "1px solid var(--card-border)",
       }}
     >
       <div
         className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold transition-colors duration-300"
         style={{
-          backgroundColor: 'var(--surface-alt)',
-          color: 'var(--text-muted)',
+          backgroundColor: "var(--surface-alt)",
+          color: "var(--text-muted)",
         }}
       >
         {name.charAt(0)}
       </div>
       <span
         className="text-body-2 font-medium whitespace-nowrap transition-colors duration-300"
-        style={{ color: 'var(--text-secondary)' }}
+        style={{ color: "var(--text-secondary)" }}
       >
         {name}
       </span>
@@ -113,32 +121,37 @@ function PartnerLogo({ name }: { name: string }) {
 /* ── Bento Grid Items ───────────────────────────────────────────── */
 
 const bentoItems = [
-  { name: 'Hyperliquid', category: 'Perps', color: '#9F7BEE' },
-  { name: 'Uniswap', category: 'Spot', color: '#32EEE2' },
-  { name: 'Derive', category: 'Options', color: '#FB7185' },
-  { name: 'Pendle', category: 'Yield', color: '#E879F9' },
-  { name: 'Aave', category: 'Lending', color: '#FC5457' },
-  { name: 'GMX', category: 'Perps', color: '#9F7BEE' },
-  { name: 'dYdX', category: 'Perps', color: '#9F7BEE' },
-  { name: 'Morpho', category: 'Lending', color: '#FC5457' },
-  { name: 'Curve', category: 'Spot', color: '#32EEE2' },
-  { name: 'Yearn', category: 'Yield', color: '#E879F9' },
-  { name: 'Compound', category: 'Lending', color: '#FC5457' },
-  { name: 'Lyra', category: 'Options', color: '#FB7185' },
+  { name: "Hyperliquid", category: "Perps", color: "#9F7BEE" },
+  { name: "Uniswap", category: "Spot", color: "#32EEE2" },
+  { name: "Derive", category: "Options", color: "#FB7185" },
+  { name: "Pendle", category: "Yield", color: "#E879F9" },
+  { name: "Aave", category: "Lending", color: "#FC5457" },
+  { name: "GMX", category: "Perps", color: "#9F7BEE" },
+  { name: "dYdX", category: "Perps", color: "#9F7BEE" },
+  { name: "Morpho", category: "Lending", color: "#FC5457" },
+  { name: "Curve", category: "Spot", color: "#32EEE2" },
+  { name: "Yearn", category: "Yield", color: "#E879F9" },
+  { name: "Compound", category: "Lending", color: "#FC5457" },
+  { name: "Lyra", category: "Options", color: "#FB7185" },
 ];
 
 export default function SocialProofSection() {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
     <section
       id="social-proof"
       ref={sectionRef}
       className="relative py-24 sm:py-32 overflow-hidden"
-      style={{ backgroundColor: 'var(--background)' }}
+      style={{ backgroundColor: "var(--background)" }}
     >
-      <div className="max-w-7xl mx-auto px-6">
+      {/* Three.js Animated Background */}
+      <div className="absolute inset-0 overflow-hidden opacity-20 dark:opacity-30 pointer-events-none">
+        <ThreeBackground />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
         {/* Header */}
         <motion.div
           className="text-center mb-16"
@@ -153,12 +166,13 @@ export default function SocialProofSection() {
             Trusted by the ecosystem
           </h2>
           <p className="text-subtext text-paragraph max-w-xl mx-auto">
-            Integrated with the leaders. Backed by top investors. Trusted by thousands.
+            Integrated with the leaders. Backed by top investors. Trusted by
+            thousands.
           </p>
         </motion.div>
 
         {/* Row 1: Metrics */}
-        <motion.div
+        {/* <motion.div
           className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 mb-20"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -188,7 +202,7 @@ export default function SocialProofSection() {
               </span>
             </motion.div>
           ))}
-        </motion.div>
+        </motion.div> */}
 
         {/* Row 2: Partner Marquee */}
         <motion.div
@@ -199,7 +213,7 @@ export default function SocialProofSection() {
         >
           <p
             className="text-body-3 font-semibold tracking-[0.15em] uppercase text-center mb-6"
-            style={{ color: 'var(--text-muted)' }}
+            style={{ color: "var(--text-muted)" }}
           >
             Partners & Backers
           </p>
@@ -209,11 +223,17 @@ export default function SocialProofSection() {
             {/* Fade edges */}
             <div
               className="absolute left-0 top-0 bottom-0 w-20 z-10 pointer-events-none"
-              style={{ background: 'linear-gradient(90deg, var(--background), transparent)' }}
+              style={{
+                background:
+                  "linear-gradient(90deg, var(--background), transparent)",
+              }}
             />
             <div
               className="absolute right-0 top-0 bottom-0 w-20 z-10 pointer-events-none"
-              style={{ background: 'linear-gradient(270deg, var(--background), transparent)' }}
+              style={{
+                background:
+                  "linear-gradient(270deg, var(--background), transparent)",
+              }}
             />
 
             <div className="flex animate-marquee hover:[animation-play-state:paused]">
@@ -227,17 +247,23 @@ export default function SocialProofSection() {
           <div className="relative overflow-hidden">
             <div
               className="absolute left-0 top-0 bottom-0 w-20 z-10 pointer-events-none"
-              style={{ background: 'linear-gradient(90deg, var(--background), transparent)' }}
+              style={{
+                background:
+                  "linear-gradient(90deg, var(--background), transparent)",
+              }}
             />
             <div
               className="absolute right-0 top-0 bottom-0 w-20 z-10 pointer-events-none"
-              style={{ background: 'linear-gradient(270deg, var(--background), transparent)' }}
+              style={{
+                background:
+                  "linear-gradient(270deg, var(--background), transparent)",
+              }}
             />
 
             <div
               className="flex"
               style={{
-                animation: 'marquee 40s linear infinite reverse',
+                animation: "marquee 40s linear infinite reverse",
               }}
             >
               {[...partnersRow2, ...partnersRow2].map((name, i) => (
@@ -248,14 +274,14 @@ export default function SocialProofSection() {
         </motion.div>
 
         {/* Row 3: Integration Bento Grid */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.6 }}
         >
           <p
             className="text-body-3 font-semibold tracking-[0.15em] uppercase text-center mb-6"
-            style={{ color: 'var(--text-muted)' }}
+            style={{ color: "var(--text-muted)" }}
           >
             Integrated Protocols
           </p>
@@ -266,8 +292,8 @@ export default function SocialProofSection() {
                 key={item.name}
                 className="rounded-xl p-4 text-center cursor-default transition-all duration-200"
                 style={{
-                  backgroundColor: 'var(--card-bg)',
-                  border: '1px solid var(--card-border)',
+                  backgroundColor: "var(--card-bg)",
+                  border: "1px solid var(--card-border)",
                 }}
                 initial={{ opacity: 0, y: 15 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -278,16 +304,17 @@ export default function SocialProofSection() {
                   borderColor: `${item.color}40`,
                 }}
               >
-                {/* Icon */}
                 <div
                   className="w-10 h-10 rounded-xl mx-auto mb-2 flex items-center justify-center text-sm font-bold text-white"
-                  style={{ background: `linear-gradient(135deg, ${item.color}CC, ${item.color})` }}
+                  style={{
+                    background: `linear-gradient(135deg, ${item.color}CC, ${item.color})`,
+                  }}
                 >
                   {item.name.charAt(0)}
                 </div>
                 <span
                   className="text-body-2 font-medium block"
-                  style={{ color: 'var(--text-primary)' }}
+                  style={{ color: "var(--text-primary)" }}
                 >
                   {item.name}
                 </span>
@@ -303,7 +330,7 @@ export default function SocialProofSection() {
               </motion.div>
             ))}
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

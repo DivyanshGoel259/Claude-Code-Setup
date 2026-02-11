@@ -2,187 +2,258 @@
 
 /**
  * Hero Section V2 — Image-inspired layout
- * Large heading + subtitle + CTA + Dashboard mockup preview
+ * Large heading + subtitle + CTA + Vanna App Dashboard mockup
  * Theme-aware (light + dark), Framer Motion animations
  */
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-/* ── Dashboard mockup data ── */
-const sidebarItems = [
-  { name: "Portfolio Overview", active: true },
-  { name: "Trading Terminal", active: false },
-  { name: "Strategy Builder", active: false },
-  { name: "Greeks Dashboard", active: false },
-  { name: "Risk Monitor", active: false },
-  { name: "Yield Farming", active: false },
-  { name: "Lending Markets", active: false },
-];
+/* ═══════════════════════════════════════════════════
+   Mockup SVG Icons
+   ═══════════════════════════════════════════════════ */
 
-const topPositions = [
-  { name: "ETH-PERP Long", protocol: "Hyperliquid" },
-  { name: "BTC Call Option", protocol: "Derive" },
-  { name: "ETH/USDC Spot", protocol: "Uniswap" },
-  { name: "PT-sUSDe Yield", protocol: "Pendle" },
-  { name: "USDC Lending", protocol: "Aave" },
-  { name: "SOL-PERP Short", protocol: "GMX" },
-  { name: "ARB Spot Long", protocol: "Sushi" },
-];
-
-/* ── Inline SVG Icon helpers ── */
-const iconProps = {
-  width: 16,
-  height: 16,
-  viewBox: "0 0 24 24",
-  fill: "none",
-  strokeWidth: 2,
-  strokeLinecap: "round" as const,
-  strokeLinejoin: "round" as const,
-};
-
-function SidebarIcon({ index, active }: { index: number; active: boolean }) {
-  const color = active ? "#703AE6" : "var(--text-muted)";
-  const p = { ...iconProps, stroke: color };
-
-  switch (index) {
-    case 0: // Grid — Portfolio
-      return (
-        <svg {...p}>
-          <rect x="3" y="3" width="7" height="7" rx="1" />
-          <rect x="14" y="3" width="7" height="7" rx="1" />
-          <rect x="3" y="14" width="7" height="7" rx="1" />
-          <rect x="14" y="14" width="7" height="7" rx="1" />
-        </svg>
-      );
-    case 1: // Zap — Trading
-      return (
-        <svg {...p}>
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-        </svg>
-      );
-    case 2: // Layers — Strategy
-      return (
-        <svg {...p}>
-          <polygon points="12 2 2 7 12 12 22 7 12 2" />
-          <polyline points="2 17 12 22 22 17" />
-          <polyline points="2 12 12 17 22 12" />
-        </svg>
-      );
-    case 3: // Triangle — Greeks (delta)
-      return (
-        <svg {...p}>
-          <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
-        </svg>
-      );
-    case 4: // Shield — Risk
-      return (
-        <svg {...p}>
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        </svg>
-      );
-    case 5: // TrendingUp — Yield
-      return (
-        <svg {...p}>
-          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-          <polyline points="17 6 23 6 23 12" />
-        </svg>
-      );
-    case 6: // Building — Lending
-      return (
-        <svg {...p}>
-          <rect x="4" y="2" width="16" height="20" rx="2" />
-          <line x1="9" y1="2" x2="9" y2="22" />
-          <line x1="15" y1="2" x2="15" y2="22" />
-        </svg>
-      );
-    default:
-      return null;
-  }
-}
-
-/* ── Small inline icons ── */
-function CalendarIcon() {
+function VannaLogo() {
   return (
-    <svg
-      width="12"
-      height="12"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    >
-      <rect x="3" y="4" width="18" height="18" rx="2" />
-      <line x1="16" y1="2" x2="16" y2="6" />
-      <line x1="8" y1="2" x2="8" y2="6" />
-      <line x1="3" y1="10" x2="21" y2="10" />
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+      <rect width="32" height="32" rx="8" fill="url(#mockup-vl)" />
+      <path
+        d="M16 8l-6 8 6 8 6-8-6-8z"
+        fill="white"
+        fillOpacity="0.9"
+      />
+      <defs>
+        <linearGradient id="mockup-vl" x1="0" y1="0" x2="32" y2="32">
+          <stop stopColor="#FC5457" />
+          <stop offset="1" stopColor="#703AE6" />
+        </linearGradient>
+      </defs>
     </svg>
   );
 }
 
-function SearchIcon() {
+function MoonIcon() {
   return (
     <svg
-      width="12"
-      height="12"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    >
-      <circle cx="11" cy="11" r="8" />
-      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-    </svg>
-  );
-}
-
-function SlidersIcon() {
-  return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    >
-      <line x1="4" y1="21" x2="4" y2="14" />
-      <line x1="4" y1="10" x2="4" y2="3" />
-      <line x1="12" y1="21" x2="12" y2="12" />
-      <line x1="12" y1="8" x2="12" y2="3" />
-      <line x1="20" y1="21" x2="20" y2="16" />
-      <line x1="20" y1="12" x2="20" y2="3" />
-      <line x1="1" y1="14" x2="7" y2="14" />
-      <line x1="9" y1="8" x2="15" y2="8" />
-      <line x1="17" y1="16" x2="23" y2="16" />
-    </svg>
-  );
-}
-
-function InfoIcon() {
-  return (
-    <svg
-      width="14"
-      height="14"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="none"
       stroke="var(--text-muted)"
       strokeWidth="2"
       strokeLinecap="round"
     >
-      <circle cx="12" cy="12" r="10" />
-      <line x1="12" y1="16" x2="12" y2="12" />
-      <line x1="12" y1="8" x2="12.01" y2="8" />
+      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
     </svg>
   );
 }
 
-/* ═══════════════════════════════════════════════
-   Dashboard Mockup — Embedded preview
-   ═══════════════════════════════════════════════ */
+function ShieldIcon({ color = "#703AE6" }: { color?: string }) {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+    >
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
+  );
+}
+
+function CubeIcon({ color = "#3B82F6" }: { color?: string }) {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+      <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+      <line x1="12" y1="22.08" x2="12" y2="12" />
+    </svg>
+  );
+}
+
+function DollarIcon({ color = "#10B981" }: { color?: string }) {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M16 8h-5a3 3 0 000 6h2a3 3 0 010 6H7" />
+      <line x1="12" y1="2" x2="12" y2="6" />
+      <line x1="12" y1="18" x2="12" y2="22" />
+    </svg>
+  );
+}
+
+function WalletIcon({ color = "#703AE6" }: { color?: string }) {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="1" y="5" width="22" height="16" rx="2" />
+      <path d="M1 10h22" />
+      <circle cx="17" cy="15" r="1" />
+    </svg>
+  );
+}
+
+function TrendDownIcon({ color = "#703AE6" }: { color?: string }) {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
+      <polyline points="17 18 23 18 23 12" />
+    </svg>
+  );
+}
+
+function ChevronDown() {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
+
+function ChevronRight() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    >
+      <polyline points="9 18 15 12 9 6" />
+    </svg>
+  );
+}
+
+function MarginInfoSvg() {
+  return (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <rect width="36" height="36" rx="10" fill="rgba(112,58,230,0.10)" />
+      <path
+        d="M18 10l-5 6h3.5v4h3v-4H23l-5-6z"
+        fill="#703AE6"
+      />
+      <path
+        d="M12 24h12"
+        stroke="#703AE6"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   Stat Card
+   ═══════════════════════════════════════════════════ */
+function StatCard({
+  icon,
+  iconBg,
+  label,
+  value,
+  valueColor,
+  suffix,
+}: {
+  icon: React.ReactNode;
+  iconBg: string;
+  label: string;
+  value: string;
+  valueColor?: string;
+  suffix?: string;
+}) {
+  return (
+    <div
+      className="rounded-xl p-3"
+      style={{
+        backgroundColor: "var(--card-bg)",
+        border: "1px solid var(--card-border)",
+      }}
+    >
+      <div className="flex items-start gap-2.5">
+        <div
+          className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+          style={{ backgroundColor: iconBg }}
+        >
+          {icon}
+        </div>
+        <div className="min-w-0">
+          <div
+            className="text-[11px] leading-tight mb-0.5"
+            style={{ color: "var(--text-muted)" }}
+          >
+            {label}
+          </div>
+          <div className="flex items-baseline gap-1">
+            <span
+              className="text-h8 font-mono"
+              style={{ color: valueColor || "var(--text-primary)" }}
+            >
+              {value}
+            </span>
+            {suffix && (
+              <span
+                className="text-[10px]"
+                style={{ color: valueColor || "var(--text-muted)" }}
+              >
+                {suffix}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   Dashboard Mockup — Vanna App Preview
+   ═══════════════════════════════════════════════════ */
 function DashboardMockup() {
   return (
     <div
@@ -196,7 +267,7 @@ function DashboardMockup() {
     >
       {/* ─ Window chrome ─ */}
       <div
-        className="flex items-center gap-2 px-4 py-3"
+        className="flex items-center gap-2 px-4 py-2.5"
         style={{ borderBottom: "1px solid var(--card-border)" }}
       >
         <span className="w-3 h-3 rounded-full bg-[#FF5F57]" />
@@ -204,74 +275,150 @@ function DashboardMockup() {
         <span className="w-3 h-3 rounded-full bg-[#28C840]" />
       </div>
 
-      {/* ─ Body ─ */}
-      <div className="flex" style={{ minHeight: 400 }}>
-        {/* Sidebar */}
+      {/* ─ App content — overflow hidden with bottom fade ─ */}
+      <div className="relative" style={{ maxHeight: 660, overflow: "hidden" }}>
+        {/* ── App Navbar ── */}
         <div
-          className="w-52 py-4 px-3 shrink-0 hidden md:block"
-          style={{ borderRight: "1px solid var(--card-border)" }}
+          className="flex items-center justify-between px-5 py-2.5"
+          style={{ borderBottom: "1px solid var(--card-border)" }}
         >
-          {sidebarItems.map((item, i) => (
-            <div
-              key={item.name}
-              className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg mb-0.5 text-body-2"
-              style={{
-                backgroundColor: item.active
-                  ? "var(--badge-bg)"
-                  : "transparent",
-                color: item.active ? "#703AE6" : "var(--text-secondary)",
-                fontWeight: item.active ? 600 : 400,
-              }}
+          <div className="flex items-center gap-2">
+            <VannaLogo />
+            <span
+              className="text-h9 font-bold"
+              style={{ color: "var(--text-primary)" }}
             >
-              <SidebarIcon index={i} active={item.active} />
-              <span className="truncate">{item.name}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Main content */}
-        <div className="flex-1 p-4 sm:p-5 min-w-0">
-          {/* Header row */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-            <div>
-              <h3 className="text-h9" style={{ color: "var(--text-primary)" }}>
-                Portfolio Overview
-              </h3>
-              <span
-                className="text-body-3"
-                style={{ color: "var(--text-muted)" }}
-              >
-                app.vanna.fi ↗
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              {/* Search */}
-              <div
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-body-3"
-                style={{
-                  border: "1px solid var(--card-border)",
-                  color: "var(--text-muted)",
-                  minWidth: 90,
-                }}
-              >
-                <SearchIcon />
-                <span>Search</span>
-              </div>
-              {/* Vanna icon button */}
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #FC5457 10%, #703AE6 80%)",
-                }}
-              >
-                <span className="text-[10px] font-bold text-white">V</span>
-              </div>
-            </div>
+              vanna
+            </span>
           </div>
 
-          {/* Date range + settings row */}
+          <div className="hidden md:flex items-center gap-5 text-body-2">
+            <span style={{ color: "var(--text-secondary)" }}>Portfolio</span>
+            <span style={{ color: "var(--text-secondary)" }}>Earn</span>
+            <span
+              className="font-semibold flex items-center gap-1"
+              style={{ color: "#FC5457" }}
+            >
+              ⚡ Margin
+            </span>
+            <span style={{ color: "var(--text-secondary)" }}>Trade</span>
+            <span style={{ color: "var(--text-secondary)" }}>Analytics</span>
+          </div>
+
+          <div className="flex items-center gap-2.5">
+            <div
+              className="px-3.5 py-1.5 rounded-full text-body-3 font-semibold text-white"
+              style={{
+                background: "linear-gradient(135deg, #FC5457, #e04347)",
+              }}
+            >
+              Deposit
+            </div>
+            <MoonIcon />
+            <div
+              className="px-3 py-1 rounded-full text-body-3 font-mono"
+              style={{
+                border: "1px solid var(--card-border)",
+                color: "var(--text-secondary)",
+              }}
+            >
+              0x01f7...b84f
+            </div>
+          </div>
+        </div>
+
+        {/* ── Purple Banner ── */}
+        <div
+          className="mx-5 mt-4 rounded-xl overflow-hidden"
+          style={{
+            background:
+              "linear-gradient(135deg, #703AE6 0%, #8D61EB 50%, #BDA4F4 100%)",
+          }}
+        >
+          <div className="p-4 flex items-center gap-4">
+            <div
+              className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0"
+              style={{ backgroundColor: "rgba(255,255,255,0.15)" }}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" fillOpacity="0.9">
+                <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" />
+              </svg>
+            </div>
+            <div>
+              <div className="text-body-1 font-bold text-white">
+                Multicollateral Loans
+              </div>
+            </div>
+            <div className="hidden sm:block w-px h-10 bg-white/30 mx-1" />
+            <div className="hidden sm:block text-body-3 text-white/80 max-w-xs">
+              Don&apos;t want to sell your ETH, LSTs, LRTs, and other bags?
+              Borrow against them!
+            </div>
+          </div>
+        </div>
+
+        {/* Carousel dots */}
+        <div className="flex justify-center gap-1.5 mt-2.5">
+          <span
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ backgroundColor: "var(--text-muted)", opacity: 0.35 }}
+          />
+          <span
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ backgroundColor: "#703AE6" }}
+          />
+        </div>
+
+        {/* ── Stats Row 1 — 3 cards ── */}
+        <div className="grid grid-cols-3 gap-3 px-5 mt-4">
+          <StatCard
+            icon={<ShieldIcon />}
+            iconBg="rgba(112, 58, 230, 0.10)"
+            label="Net Health Factor"
+            value="1.55"
+          />
+          <StatCard
+            icon={<CubeIcon />}
+            iconBg="rgba(59, 130, 246, 0.10)"
+            label="Collateral Left Before Liquidation"
+            value="$3,250"
+          />
+          <StatCard
+            icon={<DollarIcon />}
+            iconBg="rgba(16, 185, 129, 0.10)"
+            label="Net Available Collateral"
+            value="$4,250"
+          />
+        </div>
+
+        {/* ── Stats Row 2 — 2 cards ── */}
+        <div className="grid grid-cols-2 gap-3 px-5 mt-3">
+          <StatCard
+            icon={<WalletIcon />}
+            iconBg="rgba(112, 58, 230, 0.10)"
+            label="Net Amount Borrowed"
+            value="$20,000"
+          />
+          <StatCard
+            icon={<TrendDownIcon />}
+            iconBg="rgba(112, 58, 230, 0.10)"
+            label="Net Profit & Loss"
+            value="-$750"
+            valueColor="#FC5457"
+            suffix="(15% Loss)"
+          />
+        </div>
+
+        {/* ── Leverage Section ── */}
+        <div className="px-5 mt-5">
+          {/* Heading + Network dropdown */}
           <div className="flex items-center justify-between mb-4">
+            <h3
+              className="text-h7"
+              style={{ color: "var(--text-primary)" }}
+            >
+              Leverage Your Collateral
+            </h3>
             <div
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-body-3"
               style={{
@@ -279,197 +426,575 @@ function DashboardMockup() {
                 color: "var(--text-secondary)",
               }}
             >
-              <CalendarIcon />
-              <span>Jun 24</span>
-              <span style={{ color: "var(--text-muted)" }}>→</span>
-              <span>Today</span>
-            </div>
-            <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-              style={{
-                border: "1px solid var(--card-border)",
-                color: "var(--text-muted)",
-              }}
-            >
-              <SlidersIcon />
+              Network:{" "}
+              <span style={{ color: "#703AE6" }}>⊕</span>
+              <ChevronDown />
             </div>
           </div>
 
-          {/* ─ Metrics grid ─ */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Left card — Credit Deployed */}
-            <div
-              className="rounded-xl p-4"
-              style={{ border: "1px solid var(--card-border)" }}
-            >
-              <div className="flex items-center justify-between mb-1">
-                <span
-                  className="text-body-3"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  Credit Deployed
-                </span>
-                <InfoIcon />
-              </div>
-              <div className="flex items-baseline gap-2 mb-1">
-                <span
-                  className="text-h4 font-mono"
-                  style={{ color: "var(--text-primary)" }}
-                >
-                  $85.2K
-                </span>
-                <span
-                  className="text-body-3 font-semibold"
-                  style={{ color: "#32EEE2" }}
-                >
-                  +5.6%
-                </span>
-              </div>
-
-              {/* SVG line chart */}
-              <div className="relative h-28 mt-2">
-                <svg
-                  viewBox="0 0 320 100"
-                  className="w-full h-full"
-                  preserveAspectRatio="none"
-                >
-                  <defs>
-                    <linearGradient
-                      id="heroV2ChartFill"
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop offset="0%" stopColor="#703AE6" stopOpacity="0.2" />
-                      <stop offset="100%" stopColor="#703AE6" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                  {/* Area fill */}
-                  <path
-                    d="M0 78 Q30 72 60 68 T120 55 Q150 48 180 42 T240 38 Q270 42 300 32 L320 25 V100 H0 Z"
-                    fill="url(#heroV2ChartFill)"
-                  />
-                  {/* Line */}
-                  <path
-                    d="M0 78 Q30 72 60 68 T120 55 Q150 48 180 42 T240 38 Q270 42 300 32 L320 25"
-                    fill="none"
-                    stroke="#703AE6"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-
-                {/* Tooltip */}
+          {/* ── Two Columns ── */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {/* ─ Left: Leverage Form (3/5) ─ */}
+            <div className="md:col-span-3">
+              {/* Tabs */}
+              <div className="flex mb-4">
                 <div
-                  className="absolute rounded-lg px-2.5 py-1.5"
+                  className="px-4 py-2.5 text-body-2 font-medium rounded-lg"
                   style={{
-                    top: "18%",
-                    left: "50%",
-                    backgroundColor: "var(--surface-elevated)",
-                    border: "1px solid var(--card-border)",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                    borderLeft: "3px solid #FC5457",
+                    border: "1px solid #FC5457",
+                    color: "var(--text-primary)",
+                    backgroundColor: "var(--card-bg)",
                   }}
                 >
+                  Leverage your Assets
+                </div>
+                <div
+                  className="px-4 py-2.5 text-body-2 rounded-lg"
+                  style={{
+                    color: "var(--text-muted)",
+                    border: "1px solid var(--card-border)",
+                    borderLeft: "none",
+                  }}
+                >
+                  Repay Loan
+                </div>
+              </div>
+
+              {/* Deposit ↔ Borrow toggle */}
+              <div className="flex justify-end items-center gap-2 mb-4">
+                <span
+                  className="text-body-3"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  Deposit
+                </span>
+                <div
+                  className="w-10 h-5 rounded-full relative"
+                  style={{ backgroundColor: "#703AE6" }}
+                >
+                  <div className="absolute right-0.5 top-0.5 w-4 h-4 rounded-full bg-white" />
+                </div>
+                <span
+                  className="text-body-3 font-semibold"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  Borrow
+                </span>
+              </div>
+
+              {/* ─ Deposit Section ─ */}
+              <div className="mb-3">
+                <div
+                  className="text-body-2 mb-2"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  Deposit
+                </div>
+                <div
+                  className="rounded-xl p-3"
+                  style={{ border: "1px solid var(--card-border)" }}
+                >
+                  {/* Token + percentage pills */}
+                  <div className="flex items-center gap-2 mb-3 flex-wrap">
+                    <div
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-body-3 font-medium shrink-0"
+                      style={{
+                        border: "1px solid var(--card-border)",
+                        color: "var(--text-primary)",
+                      }}
+                    >
+                      <span
+                        className="w-4 h-4 rounded-full"
+                        style={{ backgroundColor: "#26A17B" }}
+                      />
+                      USDT <ChevronDown />
+                    </div>
+                    <div className="flex gap-1.5 ml-auto">
+                      {["10%", "25%", "50%", "100%"].map((pct, i) => (
+                        <span
+                          key={pct}
+                          className="px-2.5 py-1 rounded-md text-[11px] font-medium"
+                          style={{
+                            backgroundColor:
+                              i === 0 ? "#703AE6" : "transparent",
+                            color: i === 0 ? "white" : "var(--text-muted)",
+                            border:
+                              i === 0
+                                ? "none"
+                                : "1px solid var(--card-border)",
+                          }}
+                        >
+                          {pct}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Amount */}
                   <div
-                    className="text-[10px] mb-0.5"
+                    className="text-h5 font-mono mb-1"
+                    style={{ color: "var(--text-primary)" }}
+                  >
+                    2,000
+                  </div>
+                  <div
+                    className="flex items-center justify-between text-[11px]"
                     style={{ color: "var(--text-muted)" }}
                   >
-                    Jun 18
+                    <div>
+                      0.00 &nbsp;&nbsp;
+                      <span className="underline cursor-pointer">
+                        View Sources
+                      </span>
+                    </div>
+                    <div className="font-mono">
+                      Unified Balance: 7000 USDT
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1.5">
+                </div>
+                <div
+                  className="mt-2 text-body-3 font-medium cursor-pointer"
+                  style={{ color: "#703AE6" }}
+                >
+                  + Add Collateral
+                </div>
+              </div>
+
+              {/* ─ Borrow Section ─ */}
+              <div>
+                <div
+                  className="text-body-2 mb-2"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  Borrow
+                </div>
+                <div
+                  className="rounded-xl p-3"
+                  style={{ border: "1px solid var(--card-border)" }}
+                >
+                  {/* Token + Max Value + Borrowed Amount */}
+                  <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-body-3 font-medium"
+                        style={{
+                          border: "1px solid var(--card-border)",
+                          color: "var(--text-primary)",
+                        }}
+                      >
+                        <span
+                          className="w-4 h-4 rounded-full"
+                          style={{ backgroundColor: "#2775CA" }}
+                        />
+                        USDC <ChevronDown />
+                      </div>
+                      <span
+                        className="px-2 py-1 rounded-md text-[11px] font-medium"
+                        style={{
+                          border: "1px solid var(--card-border)",
+                          color: "var(--text-secondary)",
+                        }}
+                      >
+                        Max Value
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <div
+                        className="text-[10px]"
+                        style={{ color: "var(--text-muted)" }}
+                      >
+                        Borrowed Amount:
+                      </div>
+                      <div
+                        className="text-body-3 font-mono font-medium"
+                        style={{ color: "var(--text-primary)" }}
+                      >
+                        6,000.00 USDC
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ── Leverage Slider ── */}
+                  <div className="mt-4 mb-2">
+                    <div
+                      className="relative h-2 rounded-full"
+                      style={{ backgroundColor: "var(--gauge-track)" }}
+                    >
+                      {/* Active track (red gradient) */}
+                      <div
+                        className="absolute top-0 left-0 h-full rounded-full"
+                        style={{
+                          width: "40%",
+                          background:
+                            "linear-gradient(90deg, #FC5457, #e85356)",
+                        }}
+                      />
+                      {/* Thumb */}
+                      <div
+                        className="absolute -top-1.5 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center"
+                        style={{
+                          left: "calc(40% - 10px)",
+                          background:
+                            "linear-gradient(135deg, #703AE6, #FC5457)",
+                          boxShadow: "0 2px 6px rgba(112, 58, 230, 0.3)",
+                        }}
+                      >
+                        <span className="text-[6px] text-white font-bold">
+                          V
+                        </span>
+                      </div>
+                    </div>
+                    {/* Scale marks */}
+                    <div
+                      className="flex justify-between mt-2.5 text-[10px] font-mono"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      <span>0X</span>
+                      <span>2X</span>
+                      <span style={{ color: "var(--text-primary)", fontWeight: 600 }}>4X</span>
+                      <span>6X</span>
+                      <span>8X</span>
+                      <span>10X</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Detail rows */}
+                <div className="mt-3 space-y-2 text-body-3">
+                  <div className="flex justify-between">
+                    <span style={{ color: "var(--text-secondary)" }}>
+                      Platform Points
+                    </span>
                     <span
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{ backgroundColor: "#703AE6" }}
-                    />
-                    <span
-                      className="font-mono text-[11px]"
+                      className="font-mono font-medium"
                       style={{ color: "var(--text-primary)" }}
                     >
-                      Credit&nbsp;&nbsp;$78.4K
+                      2.3x
                     </span>
                   </div>
+                  <div className="flex justify-between">
+                    <span style={{ color: "var(--text-secondary)" }}>
+                      Vanna Points
+                    </span>
+                    <span
+                      className="font-mono font-medium"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      4x
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span style={{ color: "var(--text-secondary)" }}>
+                      You&apos;re depositing
+                    </span>
+                    <span
+                      className="font-mono font-medium"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      2000 USDT
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span style={{ color: "var(--text-secondary)" }}>
+                      Fees
+                    </span>
+                    <span
+                      className="font-mono font-medium"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      0.4679 USDT
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span style={{ color: "var(--text-secondary)" }}>
+                      Total deposit including fees
+                    </span>
+                    <span
+                      className="font-mono font-medium"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      2000.4679 USDT
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span style={{ color: "var(--text-secondary)" }}>
+                      Updated Net Health Factor
+                    </span>
+                    <span
+                      className="font-mono font-semibold"
+                      style={{ color: "#32EEE2" }}
+                    >
+                      1.65
+                    </span>
+                  </div>
+                </div>
+
+                {/* Deposit & Borrow CTA */}
+                <div
+                  className="mt-4 py-3 rounded-xl text-center text-body-1 font-semibold text-white cursor-pointer"
+                  style={{
+                    background: "linear-gradient(135deg, #FC5457, #e04347)",
+                  }}
+                >
+                  Deposit &amp; Borrow
                 </div>
               </div>
             </div>
 
-            {/* Right card — Active Positions */}
-            <div
-              className="rounded-xl p-4"
-              style={{ border: "1px solid var(--card-border)" }}
-            >
-              <div className="flex items-center justify-between mb-1">
-                <span
-                  className="text-body-3"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  Active Positions
-                </span>
-                <InfoIcon />
-              </div>
-              <div className="flex items-baseline gap-2 mb-3">
-                <span
-                  className="text-h4 font-mono"
-                  style={{ color: "var(--text-primary)" }}
-                >
-                  12
-                </span>
-                <span
-                  className="text-body-3 font-semibold"
-                  style={{ color: "#FC5457" }}
-                >
-                  -2.5%
-                </span>
-              </div>
-
-              {/* Top Positions label */}
-              <div
-                className="text-body-3 font-semibold mb-2"
-                style={{ color: "var(--text-primary)" }}
-              >
-                Top Positions
-              </div>
-
-              {/* Position list */}
-              <div className="space-y-0">
-                {topPositions.map((pos) => (
+            {/* ─ Right: Margin Account Info (2/5) ─ */}
+            <div className="md:col-span-2">
+              {/* Header */}
+              <div className="flex items-center gap-3 mb-1">
+                <MarginInfoSvg />
+                <div>
                   <div
-                    key={pos.name}
-                    className="flex items-center justify-between py-1.5"
+                    className="text-body-1 font-bold"
+                    style={{ color: "var(--text-primary)" }}
                   >
-                    <div className="flex items-center gap-1.5">
+                    Margin Account Info
+                  </div>
+                  <div
+                    className="text-body-3"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    Stay updated details and status.
+                  </div>
+                </div>
+              </div>
+
+              {/* Info table */}
+              <div
+                className="rounded-xl p-3 mt-3"
+                style={{ border: "1px solid var(--card-border)" }}
+              >
+                <div className="space-y-2.5 text-body-3">
+                  {[
+                    { label: "Total Borrowed value", value: "200,000 USD" },
+                    { label: "Total Collateral value", value: "200,000 USD" },
+                    { label: "Total Value", value: "100 WBTC" },
+                    {
+                      label: "Avg Health Factor",
+                      value: "1.2",
+                      highlight: true,
+                    },
+                    { label: "Time to liquidation", value: "10m" },
+                    { label: "Borrow Rate", value: "from 3.02%" },
+                  ].map((row) => (
+                    <div
+                      key={row.label}
+                      className="flex justify-between items-center"
+                    >
+                      <span style={{ color: "var(--text-secondary)" }}>
+                        {row.label}
+                      </span>
                       <span
-                        className="w-1.5 h-1.5 rounded-full"
-                        style={{ backgroundColor: "#703AE6" }}
-                      />
-                      <span
-                        className="text-body-3"
-                        style={{ color: "var(--text-secondary)" }}
+                        className="font-mono font-medium"
+                        style={{
+                          color: row.highlight
+                            ? "#703AE6"
+                            : "var(--text-primary)",
+                          fontWeight: row.highlight ? 600 : 500,
+                        }}
                       >
-                        {pos.name}
+                        {row.value}
                       </span>
                     </div>
-                    <span
-                      className="text-body-3"
-                      style={{ color: "var(--text-muted)" }}
-                    >
-                      ⋯
-                    </span>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+
+              {/* Action buttons */}
+              <div className="mt-3 space-y-2">
+                <div
+                  className="flex items-center justify-between px-4 py-3 rounded-xl text-body-2 font-bold"
+                  style={{
+                    border: "1px solid var(--card-border)",
+                    color: "var(--text-primary)",
+                  }}
+                >
+                  MORE DETAILS <ChevronRight />
+                </div>
+                <div
+                  className="flex items-center justify-between px-4 py-3 rounded-xl text-body-2 font-bold"
+                  style={{
+                    border: "1px solid var(--card-border)",
+                    color: "var(--text-primary)",
+                  }}
+                >
+                  ORACLES AND LTS <ChevronRight />
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* ── Positions Table (peek) ── */}
+        <div className="px-5 mt-6 pb-8">
+          <h3
+            className="text-h7 mb-3"
+            style={{ color: "var(--text-primary)" }}
+          >
+            Positions Table
+          </h3>
+          <div
+            className="rounded-xl overflow-hidden"
+            style={{ border: "1px solid var(--card-border)" }}
+          >
+            {/* Table header */}
+            <div
+              className="grid grid-cols-5 gap-2 px-4 py-2.5 text-[11px] font-medium"
+              style={{
+                color: "var(--text-muted)",
+                borderBottom: "1px solid var(--card-border)",
+              }}
+            >
+              <span>Collateral Deposited</span>
+              <span>Borrowed Assets</span>
+              <span>Leverage Taken</span>
+              <span>Interest accrued till date</span>
+              <span>Action</span>
+            </div>
+            {/* Row 1 */}
+            <div
+              className="grid grid-cols-5 gap-2 px-4 py-3 text-body-3 items-center"
+              style={{ borderBottom: "1px solid var(--card-border)" }}
+            >
+              <div className="flex items-center gap-1.5">
+                <span
+                  className="w-4 h-4 rounded-full shrink-0"
+                  style={{ backgroundColor: "#26A17B" }}
+                />
+                <div>
+                  <div
+                    className="font-medium"
+                    style={{ color: "var(--text-primary)" }}
+                  >
+                    100 USDT
+                  </div>
+                  <div
+                    className="text-[10px]"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    $100
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-1 flex-wrap">
+                <span
+                  className="w-3.5 h-3.5 rounded-full shrink-0"
+                  style={{ backgroundColor: "#2775CA" }}
+                />
+                <span
+                  className="font-medium"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  100 USDC
+                </span>
+                <span
+                  className="text-[10px] px-1 rounded"
+                  style={{
+                    backgroundColor: "rgba(112, 58, 230, 0.1)",
+                    color: "#703AE6",
+                  }}
+                >
+                  60%
+                </span>
+              </div>
+              <span
+                className="font-mono"
+                style={{ color: "var(--text-primary)" }}
+              >
+                5x
+              </span>
+              <span
+                className="font-mono"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                30 USD
+              </span>
+              <span
+                className="px-3 py-1 rounded-lg text-[11px] font-semibold text-white text-center w-fit"
+                style={{ backgroundColor: "#FC5457" }}
+              >
+                Repay
+              </span>
+            </div>
+            {/* Row 2 */}
+            <div className="grid grid-cols-5 gap-2 px-4 py-3 text-body-3 items-center">
+              <div className="flex items-center gap-1.5">
+                <span
+                  className="w-4 h-4 rounded-full shrink-0"
+                  style={{ backgroundColor: "#26A17B" }}
+                />
+                <div>
+                  <div
+                    className="font-medium"
+                    style={{ color: "var(--text-primary)" }}
+                  >
+                    5000 USDT
+                  </div>
+                  <div
+                    className="text-[10px]"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    $5000
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-1 flex-wrap">
+                <span
+                  className="w-3.5 h-3.5 rounded-full shrink-0"
+                  style={{ backgroundColor: "#2775CA" }}
+                />
+                <span
+                  className="font-medium"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  20,000 USDC
+                </span>
+              </div>
+              <span
+                className="font-mono"
+                style={{ color: "var(--text-primary)" }}
+              >
+                5x
+              </span>
+              <span
+                className="font-mono"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                20 USD
+              </span>
+              <span
+                className="px-3 py-1 rounded-lg text-[11px] font-semibold text-center w-fit"
+                style={{
+                  backgroundColor: "var(--gauge-track)",
+                  color: "var(--text-muted)",
+                }}
+              >
+                Repaid
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom gradient fade */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to top, var(--surface), transparent)",
+          }}
+        />
       </div>
     </div>
   );
 }
 
-/* ═══════════════════════════════════════════════
-   Hero Section V2 — Main component
-   ═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════
+   Hero Section V2 — Main Component
+   ═══════════════════════════════════════════════════ */
 export default function HeroSectionV2() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({

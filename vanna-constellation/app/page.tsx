@@ -10,19 +10,22 @@ import SocialProofSection from "@/components/sections/SocialProofSection";
 import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/layout/Footer";
 import HeroSectionV2 from "@/components/sections/HeroSectionV2";
+import HeroReactor from "@/components/sections/HeroReactor";
 
 export default function Home() {
   return (
     <main className="min-h-screen overflow-x-hidden">
       <Navbar />
-      <HeroSectionV2 />
-      <CalculatorSection />
+
+      {/* <HeroSectionV2 /> */}
+      <HeroReactor />
+      {/* <CalculatorSection /> */}
       <FlowSection />
-      <DashboardSection />
-      <ConstellationSection />
       <StrategySection />
-      <YieldVaultSection />
-      <CreditCardSection />
+      {/* <DashboardSection /> */}
+      <ConstellationSection />
+      {/* <YieldVaultSection /> */}
+      {/* <CreditCardSection /> */}
       <SocialProofSection />
       <CTASection />
       <Footer />

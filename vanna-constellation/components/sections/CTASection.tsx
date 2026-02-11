@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 // Pre-computed particle configs to avoid random on each render
 const particleConfigs = Array.from({ length: 30 }, (_, i) => ({
   size: 2 + (((i * 7 + 3) % 10) / 10) * 3,
-  left: ((i * 13 + 5) % 100),
+  left: (i * 13 + 5) % 100,
   duration: 12 + (((i * 11 + 2) % 10) / 10) * 15,
-  delay: ((i * 3 + 1) % 10),
+  delay: (i * 3 + 1) % 10,
   maxOpacity: 0.08 + (((i * 9 + 4) % 10) / 10) * 0.1,
-  travelX: (((i * 17 + 7) % 100) - 50),
+  travelX: ((i * 17 + 7) % 100) - 50,
 }));
 
 function FloatingParticle({ index }: { index: number }) {
@@ -23,20 +23,20 @@ function FloatingParticle({ index }: { index: number }) {
         width: `${config.size}px`,
         height: `${config.size}px`,
         left: `${config.left}%`,
-        bottom: '-5%',
-        background: index % 2 === 0 ? '#703AE6' : '#FC5457',
-        ['--duration' as string]: `${config.duration}s`,
-        ['--delay' as string]: `${config.delay}s`,
-        ['--travel-y' as string]: -900,
-        ['--travel-x' as string]: config.travelX,
-        ['--max-opacity' as string]: config.maxOpacity,
+        bottom: "-5%",
+        background: index % 2 === 0 ? "#703AE6" : "#FC5457",
+        ["--duration" as string]: `${config.duration}s`,
+        ["--delay" as string]: `${config.delay}s`,
+        ["--travel-y" as string]: -900,
+        ["--travel-x" as string]: config.travelX,
+        ["--max-opacity" as string]: config.maxOpacity,
       }}
     />
   );
 }
 
 function EmailCapture() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -44,12 +44,15 @@ function EmailCapture() {
     if (email.trim()) {
       setSubmitted(true);
       setTimeout(() => setSubmitted(false), 3000);
-      setEmail('');
+      setEmail("");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto"
+    >
       <input
         type="email"
         value={email}
@@ -68,12 +71,12 @@ function EmailCapture() {
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 300 }}
+            transition={{ type: "spring", stiffness: 300 }}
           >
             ✓
           </motion.span>
         ) : (
-          'Join Waitlist'
+          "Join Waitlist"
         )}
       </motion.button>
     </form>
@@ -82,7 +85,7 @@ function EmailCapture() {
 
 export default function CTASection() {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
     <section
@@ -95,17 +98,19 @@ export default function CTASection() {
         <div
           className="absolute inset-0 animate-gradient"
           style={{
-            background: 'radial-gradient(ellipse at 30% 50%, rgba(112, 58, 230, 0.15) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(252, 84, 87, 0.1) 0%, transparent 60%)',
-            backgroundSize: '200% 200%',
+            background:
+              "radial-gradient(ellipse at 30% 50%, rgba(112, 58, 230, 0.15) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(252, 84, 87, 0.1) 0%, transparent 60%)",
+            backgroundSize: "200% 200%",
           }}
         />
         {/* Secondary glow */}
         <div
           className="absolute inset-0 animate-gradient"
           style={{
-            background: 'radial-gradient(circle at 50% 80%, rgba(112, 58, 230, 0.08) 0%, transparent 50%)',
-            backgroundSize: '150% 150%',
-            animationDelay: '-4s',
+            background:
+              "radial-gradient(circle at 50% 80%, rgba(112, 58, 230, 0.08) 0%, transparent 50%)",
+            backgroundSize: "150% 150%",
+            animationDelay: "-4s",
           }}
         />
       </div>
@@ -123,7 +128,7 @@ export default function CTASection() {
         <motion.h2
           className="text-h2 text-white mb-6"
           initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
+          animate={isInView ? "visible" : "hidden"}
           variants={{
             hidden: { opacity: 0 },
             visible: {
@@ -132,13 +137,17 @@ export default function CTASection() {
             },
           }}
         >
-          {['The', 'Future', 'of', 'DeFi', 'is'].map((word, i) => (
+          {["The", "Future", "of", "DeFi", "is"].map((word, i) => (
             <motion.span
               key={i}
               className="inline-block mr-3"
               variants={{
                 hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+                },
               }}
             >
               {word}
@@ -149,7 +158,11 @@ export default function CTASection() {
             className="inline-block text-gradient"
             variants={{
               hidden: { opacity: 0, y: 30 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+              },
             }}
           >
             Composable
@@ -199,7 +212,9 @@ export default function CTASection() {
           transition={{ delay: 1 }}
         >
           <div className="flex-1 h-px bg-white/10" />
-          <span className="text-body-3 text-white/30 uppercase tracking-wider">or</span>
+          <span className="text-body-3 text-white/30 uppercase tracking-wider">
+            or
+          </span>
           <div className="flex-1 h-px bg-white/10" />
         </motion.div>
 
@@ -216,7 +231,7 @@ export default function CTASection() {
         </motion.div>
 
         {/* Stats bar */}
-        <motion.div
+        {/* <motion.div
           className="mt-20 grid grid-cols-2 sm:grid-cols-4 gap-8"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
@@ -237,7 +252,7 @@ export default function CTASection() {
               </span>
             </div>
           ))}
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );
