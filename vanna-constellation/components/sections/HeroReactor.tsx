@@ -149,20 +149,20 @@ export default function HeroReactor() {
           }}
         />
 
-        {/* Floating Geometric Shapes */}
+        {/* Floating Geometric Shapes — hidden on mobile/tablet */}
         <div
-          className="absolute top-1/4 right-1/4 w-32 h-32 border-2 rounded-sm opacity-[0.12] dark:opacity-[0.18] rotate-45 animate-pulse-glow"
+          className="hidden lg:block absolute top-1/4 right-1/4 w-32 h-32 border-2 rounded-sm opacity-[0.12] dark:opacity-[0.18] rotate-45 animate-pulse-glow"
           style={{ borderColor: "var(--color-violet-300)" }}
         />
         <div
-          className="absolute bottom-1/3 left-1/3 w-24 h-24 border-2 rounded-sm opacity-[0.10] dark:opacity-[0.15] rotate-12 animate-pulse-glow"
+          className="hidden lg:block absolute bottom-1/3 left-1/3 w-24 h-24 border-2 rounded-sm opacity-[0.10] dark:opacity-[0.15] rotate-12 animate-pulse-glow"
           style={{
             borderColor: "var(--color-imperial-red-400)",
             animationDelay: "0.5s",
           }}
         />
         <div
-          className="absolute top-1/2 right-1/3 w-16 h-16 rounded-full border-2 opacity-[0.10] dark:opacity-[0.15] animate-pulse-glow"
+          className="hidden lg:block absolute top-1/2 right-1/3 w-16 h-16 rounded-full border-2 opacity-[0.10] dark:opacity-[0.15] animate-pulse-glow"
           style={{
             borderColor: "var(--color-electric-blue-400)",
             animationDelay: "1s",
@@ -175,13 +175,13 @@ export default function HeroReactor() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 xl:gap-12 2xl:gap-16 items-center">
           {/* ── Left Column — Text Content ── */}
           <motion.div
-            className="space-y-6 lg:space-y-3 xl:space-y-5 2xl:space-y-8"
+            className="text-center lg:text-left space-y-6 lg:space-y-3 xl:space-y-5 2xl:space-y-8"
             variants={stagger}
             initial="hidden"
             animate="visible"
           >
             {/* Eyebrow Text */}
-            <motion.div
+            {/* <motion.div
               className="inline-flex items-center gap-2 px-4 py-1.5 lg:py-1.5 xl:py-2 rounded-full backdrop-blur-sm"
               style={{
                 backgroundColor: "var(--badge-bg)",
@@ -193,7 +193,7 @@ export default function HeroReactor() {
               <span className="text-btn-sm" style={{ color: "#703AE6" }}>
                 Composable Credit Infrastructure
               </span>
-            </motion.div>
+            </motion.div> */}
 
             {/* Main Headline */}
             <motion.h1 variants={fadeUp}>
@@ -238,7 +238,7 @@ export default function HeroReactor() {
                 &amp; Anywhere
               </span>
               <span
-                className="block text-h6 lg:text-h6 xl:text-h4 leading-tight mt-1 xl:mt-2"
+                className="block text-h6 xl:text-h4 leading-tight mt-1 xl:mt-2"
                 style={{ color: "var(--text-secondary)" }}
               >
                 without getting liquidated
@@ -247,7 +247,7 @@ export default function HeroReactor() {
 
             {/* Subheadline */}
             <motion.p
-              className="text-subtext max-w-xl"
+              className="text-subtext lg:text-subtext max-w-xl mx-auto lg:mx-0"
               style={{ color: "var(--text-secondary)" }}
               variants={fadeUp}
             >
@@ -261,7 +261,7 @@ export default function HeroReactor() {
 
             {/* Stats Row */}
             <motion.div
-              className="grid grid-cols-3 gap-4 lg:gap-4 xl:gap-6 py-3 lg:py-1 xl:py-4 2xl:py-6"
+              className="grid grid-cols-3 gap-4 xl:gap-6 py-3 lg:py-1 xl:py-4 2xl:py-6 max-w-sm mx-auto lg:mx-0 lg:max-w-none"
               variants={fadeUp}
             >
               {[
@@ -285,11 +285,11 @@ export default function HeroReactor() {
 
             {/* CTA Buttons */}
             <motion.div
-              className="flex flex-col sm:flex-row gap-3 lg:gap-3 xl:gap-4"
+              className="flex flex-col sm:flex-row justify-center lg:justify-start gap-3 lg:gap-3 xl:gap-4"
               variants={fadeUp}
             >
               <motion.button
-                className="bg-vanna-gradient text-white text-btn-md lg:text-btn-md xl:text-btn-lg px-6 py-3 xl:px-8 xl:py-4 rounded-xl shadow-lg transition-shadow duration-300"
+                className="bg-vanna-gradient text-white text-btn-md lg:text-btn-md xl:text-btn-lg px-6 py-3 lg:px-6 lg:py-3 xl:px-8 xl:py-4 rounded-xl shadow-lg transition-shadow duration-300"
                 style={{ boxShadow: "0 8px 30px rgba(112, 58, 230, 0.25)" }}
                 whileHover={{
                   scale: 1.03,
@@ -300,7 +300,7 @@ export default function HeroReactor() {
                 Launch App
               </motion.button>
               <motion.button
-                className="text-btn-md lg:text-btn-md xl:text-btn-lg px-6 py-3 xl:px-8 xl:py-4 rounded-xl transition-colors duration-200"
+                className="text-btn-md lg:text-btn-md xl:text-btn-lg px-6 py-3 lg:px-6 lg:py-3 xl:px-8 xl:py-4 rounded-xl transition-colors duration-200"
                 style={{
                   color: "var(--text-primary)",
                   border: "2px solid var(--border-default)",
@@ -315,7 +315,7 @@ export default function HeroReactor() {
 
             {/* Feature Pills */}
             <motion.div
-              className="flex flex-wrap gap-3 pt-2 lg:pt-0 xl:pt-2 2xl:pt-4"
+              className="flex flex-wrap justify-center lg:justify-start gap-3 pt-2 lg:pt-0 xl:pt-2 2xl:pt-4"
               variants={fadeUp}
             >
               {featurePills.map((feature) => (
@@ -341,7 +341,7 @@ export default function HeroReactor() {
 
           {/* ── Right Column — Animated Explainer Video ── */}
           <motion.div
-            className="relative"
+            className="relative max-w-lg mx-auto lg:max-w-[90%] xl:max-w-none lg:mx-0"
             variants={fadeRight}
             initial="hidden"
             animate="visible"

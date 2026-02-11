@@ -148,7 +148,7 @@ export default function Navbar() {
           </a>
 
           {/* Desktop Nav Links — center */}
-          <div className="hidden md:flex items-center gap-1 mx-6">
+          <div className="hidden lg:flex items-center gap-1 mx-6">
             {navLinks.map((link) => (
               <a
                 key={link.label}
@@ -212,7 +212,7 @@ export default function Navbar() {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`md:hidden w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+              className={`lg:hidden w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
                 theme === "dark"
                   ? "text-white/70 hover:text-white hover:bg-white/[0.08]"
                   : "text-gray-600 hover:text-gray-900 hover:bg-black/[0.05]"
@@ -233,7 +233,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 md:hidden"
+            className="fixed inset-0 z-40 lg:hidden"
             style={{
               backgroundColor:
                 theme === "dark"
