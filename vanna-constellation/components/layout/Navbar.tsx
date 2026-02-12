@@ -6,10 +6,10 @@ import { useTheme } from "@/components/providers/ThemeProvider";
 import Image from "next/image";
 
 const navLinks = [
-  { label: "How It Works", href: "#flow" },
-  { label: "Features", href: "#calculator" },
+  { label: "How It Works", href: "#how-it-works" },
   { label: "Ecosystem", href: "#constellation" },
-  { label: "Dashboard", href: "#dashboard" },
+  { label: "Partners", href: "#social-proof" },
+  { label: "Community", href: "#cta" },
 ];
 
 function SunIcon() {
@@ -163,24 +163,6 @@ export default function Navbar() {
               </a>
             ))}
 
-            {/* Separator */}
-            <div
-              className={`w-px h-4 mx-2 ${
-                theme === "dark" ? "bg-white/15" : "bg-black/10"
-              }`}
-            />
-
-            {/* Community link after separator */}
-            <a
-              href="#cta"
-              className={`px-4 py-2 text-[13px] font-medium rounded-full transition-all duration-200 ${
-                theme === "dark"
-                  ? "text-white/70 hover:text-white hover:bg-white/[0.07]"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-black/[0.04]"
-              }`}
-            >
-              Community
-            </a>
           </div>
 
           {/* Right side */}
@@ -242,7 +224,7 @@ export default function Navbar() {
             }}
           >
             <div className="flex flex-col items-center justify-center h-full gap-6">
-              {[...navLinks, { label: "Community", href: "#cta" }].map(
+              {navLinks.map(
                 (link, i) => (
                   <motion.a
                     key={link.label}
