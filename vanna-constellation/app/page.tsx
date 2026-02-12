@@ -1,31 +1,19 @@
 import Navbar from "@/components/layout/Navbar";
-import CalculatorSection from "@/components/sections/CalculatorSection";
-import FlowSection from "@/components/sections/FlowSection";
-import DashboardSection from "@/components/sections/DashboardSection";
+import HowItWorksSection from "@/components/sections/HowItWorksSection";
 import ConstellationSection from "@/components/sections/ConstellationSection";
-import StrategySection from "@/components/sections/StrategySection";
-import YieldVaultSection from "@/components/sections/YieldVaultSection";
-import CreditCardSection from "@/components/sections/CreditCardSection";
 import SocialProofSection from "@/components/sections/SocialProofSection";
 import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/layout/Footer";
-import HeroSectionV2 from "@/components/sections/HeroSectionV2";
 import HeroReactor from "@/components/sections/HeroReactor";
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-x-hidden">
+    <main className="min-h-screen" style={{ overflowX: "clip" }}>
       <Navbar />
 
-      {/* <HeroSectionV2 /> */}
       <HeroReactor />
-      {/* <CalculatorSection /> */}
-      <FlowSection />
-      <StrategySection />
-      {/* <DashboardSection /> */}
+      <HowItWorksSection />
       <ConstellationSection />
-      {/* <YieldVaultSection /> */}
-      {/* <CreditCardSection /> */}
       <SocialProofSection />
       <CTASection />
       <Footer />

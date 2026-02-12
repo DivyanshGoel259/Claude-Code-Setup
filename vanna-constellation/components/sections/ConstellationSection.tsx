@@ -30,9 +30,9 @@ const protocolNodes = [
     id: "uniswap",
     name: "Uniswap",
     category: "spot",
-    chains: ["Base", "Arbitrum", "Optimism"],
+    chains: ["Base", "Optimism"],
     color: "#3B82F6",
-    actions: ["Swap", "Pool", "Liquidity"],
+    actions: ["Swap", "AMM Pool"],
     logo: "/icons/Uniswap.png",
   },
   {
@@ -41,7 +41,7 @@ const protocolNodes = [
     category: "spot",
     chains: ["Stellar"],
     color: "#3B82F6",
-    actions: ["Swap", "Pool"],
+    actions: ["Swap", "AMM Pool"],
     logo: "/icons/protocols/soroswap.png",
   },
   {
@@ -50,7 +50,7 @@ const protocolNodes = [
     category: "spot",
     chains: ["Stellar"],
     color: "#3B82F6",
-    actions: ["Swap", "Liquidity Rewards"],
+    actions: ["Swap", "AMM Pool"],
     logo: "/icons/protocols/Aquarius.png",
   },
   {
@@ -59,7 +59,7 @@ const protocolNodes = [
     category: "spot",
     chains: ["Base"],
     color: "#3B82F6",
-    actions: ["Swap", "Pool", "Liquidity"],
+    actions: ["Swap", "AMM Pool"],
     logo: "/icons/protocols/Aerodrome.svg",
   },
   {
@@ -68,7 +68,7 @@ const protocolNodes = [
     category: "spot",
     chains: ["Hyperliquid"],
     color: "#3B82F6",
-    actions: ["Spot Trading"],
+    actions: ["Spot OrderBook"],
     logo: "/icons/protocols/Hyperliquid.png",
   },
   {
@@ -77,7 +77,7 @@ const protocolNodes = [
     category: "spot",
     chains: ["BNB"],
     color: "#3B82F6",
-    actions: ["Spot Trading"],
+    actions: ["Spot OrderBook"],
     logo: "/icons/protocols/aster.png",
   },
   /* ── Perps ── */
@@ -87,7 +87,7 @@ const protocolNodes = [
     category: "perps",
     chains: ["Hyperliquid"],
     color: "#9F7BEE",
-    actions: ["Long", "Short", "50x Leverage"],
+    actions: ["Leverage Trading", "40x Leverage"],
     logo: "/icons/protocols/Hyperliquid.png",
   },
   {
@@ -96,7 +96,7 @@ const protocolNodes = [
     category: "perps",
     chains: ["Base"],
     color: "#9F7BEE",
-    actions: ["Perps", "Leverage Trading"],
+    actions: ["Leverage Trading", "1000x Leverage"],
     logo: "/icons/protocols/Avantis.png",
   },
   {
@@ -105,7 +105,7 @@ const protocolNodes = [
     category: "perps",
     chains: ["BNB"],
     color: "#9F7BEE",
-    actions: ["Perps", "Leverage Trading"],
+    actions: ["Leverage Trading", "200x Leverage"],
     logo: "/icons/protocols/aster.png",
   },
   /* ── Options ── */
@@ -115,7 +115,7 @@ const protocolNodes = [
     category: "options",
     chains: ["Derive"],
     color: "#FB7185",
-    actions: ["Options", "Structured Products"],
+    actions: ["Options Trading"],
     logo: "/icons/protocols/Derive.png",
   },
   /* ── Yield ── */
@@ -364,7 +364,7 @@ export default function ConstellationSection() {
         >
           {[
             { label: "Protocols", value: "13" },
-            { label: "Chains", value: "5" },
+            { label: "Chains", value: "7" },
             { label: "Categories", value: "4" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">

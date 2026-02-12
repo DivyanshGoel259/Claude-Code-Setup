@@ -1,5 +1,8 @@
 'use client';
 
+import Image from 'next/image';
+import { useTheme } from '@/components/providers/ThemeProvider';
+
 const footerLinks = {
   Product: [
     { label: 'Launch App', href: '#' },
@@ -66,6 +69,8 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const { theme } = useTheme();
+
   return (
     <footer
       className="border-t"
@@ -80,15 +85,17 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-vanna-gradient flex items-center justify-center">
-                <span className="text-white font-bold text-sm">V</span>
-              </div>
-              <span
-                className="text-lg font-bold tracking-tight"
-                style={{ color: 'var(--text-primary)' }}
-              >
-                VANNA
-              </span>
+              <Image
+                src={
+                  theme === 'dark'
+                    ? '/icons/vanna-white.png'
+                    : '/icons/vanna.png'
+                }
+                alt="Vanna"
+                width={100}
+                height={32}
+                className="h-7 w-auto object-contain"
+              />
             </div>
             <p className="text-body-2 mb-6" style={{ color: 'var(--text-secondary)' }}>
               Composable credit infrastructure for the next generation of DeFi.
