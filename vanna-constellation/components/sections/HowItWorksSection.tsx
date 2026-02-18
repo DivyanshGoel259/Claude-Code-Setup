@@ -144,7 +144,13 @@ const phases = [
    TIMELINE PANEL (LEFT)
    ═══════════════════════════════════════════════════ */
 
-function TimelinePanel({ activePhase }: { activePhase: number }) {
+function TimelinePanel({
+  activePhase,
+  onPhaseClick,
+}: {
+  activePhase: number;
+  onPhaseClick?: (phase: number) => void;
+}) {
   return (
     <div className="flex flex-col gap-0">
       {phases.map((step, i) => {
@@ -153,11 +159,15 @@ function TimelinePanel({ activePhase }: { activePhase: number }) {
         const accent = step.accent;
 
         return (
-          <div key={step.phase} className="flex gap-4 sm:gap-6">
+          <div
+            key={step.phase}
+            className="flex gap-4 sm:gap-6 cursor-pointer"
+            onClick={() => onPhaseClick?.(i)}
+          >
             {/* Dot + line */}
             <div className="flex flex-col items-center">
               <motion.div
-                className="relative w-12 h-12 rounded-xl flex items-center justify-center shrink-0 z-10"
+                className="relative w-10 h-10 lg:w-12 lg:h-12 rounded-xl flex items-center justify-center shrink-0 z-10"
                 style={{
                   backgroundColor: isActive
                     ? `${accent}15`
@@ -206,7 +216,7 @@ function TimelinePanel({ activePhase }: { activePhase: number }) {
 
               {i < phases.length - 1 && (
                 <div
-                  className="w-px flex-1 min-h-[40px]"
+                  className="w-px flex-1 min-h-[24px] lg:min-h-[32px] xl:min-h-[40px]"
                   style={{
                     backgroundColor:
                       i < activePhase ? accent + "40" : "var(--border-default)",
@@ -216,7 +226,9 @@ function TimelinePanel({ activePhase }: { activePhase: number }) {
             </div>
 
             {/* Text */}
-            <div className={`pb-8 ${i === phases.length - 1 ? "pb-0" : ""}`}>
+            <div
+              className={`pb-4 lg:pb-6 xl:pb-8 ${i === phases.length - 1 ? "!pb-0" : ""}`}
+            >
               <motion.span
                 className="text-[11px] font-mono tracking-wider mb-1 block uppercase"
                 animate={{
@@ -228,7 +240,7 @@ function TimelinePanel({ activePhase }: { activePhase: number }) {
                 Phase {step.phase}
               </motion.span>
               <motion.h3
-                className="text-lg font-semibold mb-1"
+                className="text-base lg:text-lg font-semibold mb-1"
                 animate={{
                   color: isActive ? "var(--text-primary)" : "var(--text-muted)",
                   opacity: isActive || isCompleted ? 1 : 0.5,
@@ -240,7 +252,7 @@ function TimelinePanel({ activePhase }: { activePhase: number }) {
               <AnimatePresence mode="wait">
                 {isActive && (
                   <motion.p
-                    className="text-sm max-w-xs"
+                    className="text-xs lg:text-sm max-w-xs"
                     style={{ color: "var(--text-secondary)" }}
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
@@ -292,28 +304,28 @@ function DepositWidget({
       className="h-full flex flex-col"
     >
       <div
-        className="rounded-2xl p-5 sm:p-6 flex-1"
+        className="rounded-2xl p-4 lg:p-5 xl:p-6 flex-1"
         style={{
           backgroundColor: "var(--card-bg)",
           border: "1px solid var(--card-border)",
         }}
       >
         <h4
-          className="text-lg font-semibold mb-4 "
+          className="text-base lg:text-lg font-semibold mb-3 lg:mb-4"
           style={{ color: "var(--text-primary)" }}
         >
           Deposit to Vanna
         </h4>
 
         {/* Asset Selector */}
-        <div className="mb-4">
+        <div className="mb-3 lg:mb-4">
           <label
-            className="text-sm font-medium block mb-2"
+            className="text-sm font-medium block mb-1.5 lg:mb-2"
             style={{ color: "var(--text-secondary)" }}
           >
             Select Asset
           </label>
-          <div className="flex gap-3">
+          <div className="flex gap-2 lg:gap-3">
             {depositAssets.map((a, i) => (
               <button
                 key={a.symbol}
@@ -321,7 +333,7 @@ function DepositWidget({
                   setAsset(i);
                   setDeposited(false);
                 }}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-200 border ${
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 lg:py-3 rounded-xl text-sm font-semibold transition-all duration-200 border ${
                   asset === i
                     ? "border-violet-500 bg-violet-500/10 text-violet-500"
                     : "hover:border-violet-500/30"
@@ -343,15 +355,15 @@ function DepositWidget({
         </div>
 
         {/* Amount */}
-        <div className="mb-4">
+        <div className="mb-3 lg:mb-4">
           <label
-            className="text-sm font-medium block mb-2"
+            className="text-sm font-medium block mb-1.5 lg:mb-2"
             style={{ color: "var(--text-secondary)" }}
           >
             Amount
           </label>
           <div
-            className="flex items-center rounded-xl px-4 py-3 border transition-colors focus-within:border-violet-500"
+            className="flex items-center rounded-xl px-4 py-2.5 lg:py-3 border transition-colors focus-within:border-violet-500"
             style={{
               backgroundColor: "var(--input-bg)",
               borderColor: "var(--border-input)",
@@ -380,7 +392,7 @@ function DepositWidget({
         {/* Deposit Button */}
         <button
           onClick={() => setDeposited(true)}
-          className="w-full py-3 rounded-xl text-white font-semibold text-sm bg-vanna-gradient hover:opacity-90 transition-opacity mb-4 cursor-pointer"
+          className="w-full py-2.5 lg:py-3 rounded-xl text-white font-semibold text-sm bg-vanna-gradient hover:opacity-90 transition-opacity mb-3 lg:mb-4 cursor-pointer"
         >
           Deposit to Vanna
         </button>
@@ -470,36 +482,43 @@ function DepositWidget({
 function BarChart({
   traditional,
   vanna,
+  compact = false,
 }: {
   traditional: number;
   vanna: number;
+  compact?: boolean;
 }) {
   const ref = useRef(null);
   const maxVal = Math.max(traditional, vanna, 1);
+  const barMax = compact ? 80 : 120;
 
   return (
     <div
       ref={ref}
-      className="flex items-end justify-center gap-6 sm:gap-8 h-36 sm:h-40"
+      className={
+        compact
+          ? "flex items-end justify-center gap-5 h-28"
+          : "flex items-end justify-center gap-6 lg:gap-8 h-28 lg:h-36 xl:h-40"
+      }
     >
       {/* Traditional */}
-      <div className="flex flex-col items-center gap-2 flex-1 max-w-24">
+      <div className={`flex flex-col items-center flex-1 max-w-24 ${compact ? "gap-1" : "gap-2"}`}>
         <span
-          className="text-xs font-medium text-center"
+          className={`${compact ? "text-[10px]" : "text-xs"} font-medium text-center`}
           style={{ color: "var(--text-muted)" }}
         >
           Traditional
         </span>
         <div className="relative w-full flex justify-center">
           <motion.div
-            className="w-14 sm:w-16 rounded-t-lg"
+            className={`${compact ? "w-12" : "w-14 lg:w-16"} rounded-t-lg`}
             style={{ backgroundColor: "var(--gauge-track)" }}
-            animate={{ height: `${(traditional / maxVal) * 120}px` }}
+            animate={{ height: `${Math.max(6, (traditional / maxVal) * barMax)}px` }}
             transition={{ duration: 0.8, ease }}
           />
         </div>
         <span
-          className="text-sm font-mono"
+          className={`${compact ? "text-xs" : "text-sm"} font-mono`}
           style={{ color: "var(--text-secondary)" }}
         >
           <AnimatedNumber value={traditional} prefix="$" />
@@ -507,7 +526,7 @@ function BarChart({
       </div>
 
       {/* VS */}
-      <div className="flex flex-col items-center justify-end pb-8">
+      <div className={`flex flex-col items-center justify-end ${compact ? "pb-5" : "pb-8"}`}>
         <span
           className="text-[10px] font-bold tracking-wider"
           style={{ color: "var(--text-muted)" }}
@@ -517,20 +536,20 @@ function BarChart({
       </div>
 
       {/* Vanna */}
-      <div className="flex flex-col items-center gap-2 flex-1 max-w-24">
-        <span className="text-xs font-medium text-center text-violet-500">
+      <div className={`flex flex-col items-center flex-1 max-w-24 ${compact ? "gap-1" : "gap-2"}`}>
+        <span className={`${compact ? "text-[10px]" : "text-xs"} font-medium text-center text-violet-500`}>
           With Vanna
         </span>
         <div className="relative w-full flex justify-center">
           <motion.div
-            className="w-14 sm:w-16 rounded-t-lg bg-vanna-gradient relative overflow-hidden"
-            animate={{ height: `${(vanna / maxVal) * 120}px` }}
+            className={`${compact ? "w-12" : "w-14 lg:w-16"} rounded-t-lg bg-vanna-gradient relative overflow-hidden`}
+            animate={{ height: `${Math.max(6, (vanna / maxVal) * barMax)}px` }}
             transition={{ duration: 1, ease }}
           >
             <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/10 to-transparent animate-pulse-glow" />
           </motion.div>
         </div>
-        <span className="text-sm font-mono text-violet-500 font-bold">
+        <span className={`${compact ? "text-xs" : "text-sm"} font-mono text-violet-500 font-bold`}>
           <AnimatedNumber value={vanna} prefix="$" />
         </span>
       </div>
@@ -549,7 +568,6 @@ function CalculatorWidget({
 
   const totalPower = deposit * leverage;
   const traditionalPower = deposit * 0.7;
-  const estimatedYield = (totalPower * 0.12).toFixed(0);
 
   return (
     <motion.div
@@ -561,45 +579,45 @@ function CalculatorWidget({
       className="h-full flex flex-col"
     >
       <div
-        className="rounded-2xl p-5 sm:p-6 flex-1"
+        className="rounded-2xl p-3 sm:p-4 lg:p-5 xl:p-6 flex-1"
         style={{
           backgroundColor: "var(--card-bg)",
           border: "1px solid var(--card-border)",
         }}
       >
         <h4
-          className="text-lg font-semibold mb-4"
+          className="text-sm sm:text-base lg:text-lg font-semibold mb-2 sm:mb-3 lg:mb-4"
           style={{ color: "var(--text-primary)" }}
         >
           Capital Multiplier
         </h4>
 
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 lg:gap-4">
           {/* Left: Inputs & Results */}
           <div className="flex-1 min-w-0">
             {/* Deposit summary from Phase 01 */}
             <div
-              className="rounded-xl p-3 mb-4 flex items-center gap-3"
+              className="rounded-xl p-2 sm:p-2.5 lg:p-3 mb-2 sm:mb-3 lg:mb-4 flex items-center gap-2 sm:gap-3"
               style={{
                 backgroundColor: "var(--surface-alt)",
                 border: "1px solid var(--border-default)",
               }}
             >
               <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-base sm:text-lg"
                 style={{ backgroundColor: "#703AE620", color: "#703AE6" }}
               >
                 {depositAssets[asset].icon}
               </div>
               <div className="flex-1">
                 <span
-                  className="text-xs block"
+                  className="text-[10px] sm:text-xs block"
                   style={{ color: "var(--text-muted)" }}
                 >
                   Your Deposit
                 </span>
                 <span
-                  className="text-base font-mono font-semibold"
+                  className="text-sm sm:text-base font-mono font-semibold"
                   style={{ color: "var(--text-primary)" }}
                 >
                   ${deposit.toLocaleString()} {depositAssets[asset].symbol}
@@ -627,16 +645,16 @@ function CalculatorWidget({
             </div>
 
             {/* Leverage */}
-            <div className="mb-4">
-              <div className="flex items-center justify-between mb-1.5">
+            <div className="mb-2 sm:mb-3 lg:mb-4">
+              <div className="flex items-center justify-between mb-1 sm:mb-1.5">
                 <label
-                  className="text-sm font-medium"
+                  className="text-xs sm:text-sm font-medium"
                   style={{ color: "var(--text-secondary)" }}
                 >
                   Leverage
                 </label>
                 <motion.span
-                  className="text-lg text-gradient font-bold font-mono"
+                  className="text-base sm:text-lg text-gradient font-bold font-mono"
                   key={leverage}
                   initial={{ scale: 1.3 }}
                   animate={{ scale: 1 }}
@@ -675,32 +693,32 @@ function CalculatorWidget({
 
             {/* Results */}
             <div
-              className="rounded-xl p-3 space-y-2"
+              className="rounded-xl p-2.5 sm:p-3 space-y-1.5 sm:space-y-2"
               style={{ backgroundColor: "var(--surface-alt)" }}
             >
               <div className="flex justify-between items-center">
                 <span
-                  className="text-sm"
+                  className="text-xs sm:text-sm"
                   style={{ color: "var(--text-secondary)" }}
                 >
                   Total Trading Power
                 </span>
-                <span className="text-lg text-gradient font-mono font-bold">
+                <span className="text-base sm:text-lg text-gradient font-mono font-bold">
                   <AnimatedNumber value={totalPower} prefix="$" />
                 </span>
               </div>
               <div
-                className="border-t pt-3"
+                className="border-t pt-2 sm:pt-3"
                 style={{ borderColor: "var(--border-default)" }}
               >
                 <div className="flex justify-between items-center mb-1">
                   <span
-                    className="text-sm"
+                    className="text-xs sm:text-sm"
                     style={{ color: "var(--text-secondary)" }}
                   >
                     Capital Multiplied
                   </span>
-                  <span className="text-sm text-violet-500 font-mono font-semibold">
+                  <span className="text-xs sm:text-sm text-violet-500 font-mono font-semibold">
                     {leverage}x
                   </span>
                 </div>
@@ -723,14 +741,19 @@ function CalculatorWidget({
             </div>
           </div>
 
-          {/* Right: Bar Chart */}
+          {/* Bar Chart — compact on mobile, full on sm+ */}
           <div className="flex flex-col items-center justify-center sm:w-[240px] shrink-0">
-            <BarChart traditional={traditionalPower} vanna={totalPower} />
+            <div className="sm:hidden w-full">
+              <BarChart traditional={traditionalPower} vanna={totalPower} compact />
+            </div>
+            <div className="hidden sm:block">
+              <BarChart traditional={traditionalPower} vanna={totalPower} />
+            </div>
 
             {/* Comparison badge */}
-            <div className="text-center mt-3">
+            <div className="text-center mt-1.5 sm:mt-3">
               <span
-                className="inline-block text-sm px-4 py-2 rounded-xl"
+                className="inline-block text-xs sm:text-sm px-3 sm:px-4 py-1 sm:py-2 rounded-xl"
                 style={{
                   backgroundColor: "var(--badge-bg)",
                   color: "var(--badge-text)",
@@ -936,18 +959,6 @@ const stratBlocks: StrategyBlock[] = [
     capitalEfficiency: 1,
   },
   {
-    id: "borrow",
-    label: "Borrow",
-    category: "lending",
-    icon: <CoinsIcon />,
-    color: "#FC5457",
-    riskScore: 40,
-    capitalWeight: 30,
-    yieldPct: -7,
-    exposure: "neutral",
-    capitalEfficiency: 3,
-  },
-  {
     id: "lp-pool",
     label: "LP Pool",
     category: "pool",
@@ -988,9 +999,9 @@ const stratTemplates: StrategyTemplate[] = [
   },
   { id: "yield-stack", name: "Yield Stack", blocks: ["lend", "lp-pool"] },
   {
-    id: "leveraged-yield",
-    name: "Leveraged Yield",
-    blocks: ["borrow", "yield-farm"],
+    id: "funding-arb",
+    name: "Funding Arb",
+    blocks: ["perp-long", "perp-short"],
   },
 ];
 
@@ -1034,14 +1045,12 @@ function StrategyWidget() {
 
   const baseYield = selectedBlocks.reduce((acc, b) => acc + b.yieldPct, 0);
   const hasLend = activeBlocks.includes("lend");
-  const hasBorrow = activeBlocks.includes("borrow");
   const hasLpPool = activeBlocks.includes("lp-pool");
   const hasYieldFarm = activeBlocks.includes("yield-farm");
   let strategyBonus = 0;
   if (hasPerpLong && hasPerpShort) strategyBonus += 3;
   else if (hasSpotLong && hasPerpShort) strategyBonus += 4;
-  if (hasLend && hasBorrow) strategyBonus += 6;
-  else if (hasBorrow && (hasLpPool || hasYieldFarm)) strategyBonus += 3;
+  if (hasLend && (hasLpPool || hasYieldFarm)) strategyBonus += 3;
   const totalYield = baseYield + strategyBonus;
 
   const exposureLabel =
@@ -1492,14 +1501,14 @@ function DashboardWidget() {
       className="h-full flex flex-col"
     >
       <div
-        className="rounded-2xl p-5 sm:p-6 flex-1"
+        className="rounded-2xl p-4 lg:p-5 xl:p-6 flex-1"
         style={{
           backgroundColor: "var(--card-bg)",
           border: "1px solid var(--card-border)",
         }}
       >
         <h4
-          className="text-lg font-semibold mb-4"
+          className="text-base lg:text-lg font-semibold mb-3 lg:mb-4"
           style={{ color: "var(--text-primary)" }}
         >
           Portfolio Dashboard
@@ -1507,10 +1516,10 @@ function DashboardWidget() {
 
         {/* Portfolio Overview */}
         <div
-          className="rounded-xl p-4 mb-4"
+          className="rounded-xl p-3 lg:p-4 mb-3 lg:mb-4"
           style={{ backgroundColor: "var(--surface-alt)" }}
         >
-          <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="grid grid-cols-3 gap-3 lg:gap-4 text-center">
             <div>
               <span
                 className="text-xs block mb-1"
@@ -1551,7 +1560,7 @@ function DashboardWidget() {
         </div>
 
         {/* Health Factor */}
-        <div className="mb-4">
+        <div className="mb-3 lg:mb-4">
           <div className="flex justify-between items-center mb-2">
             <span
               className="text-sm font-medium"
@@ -1594,9 +1603,9 @@ function DashboardWidget() {
         </div>
 
         {/* Active Positions */}
-        <div className="mb-4">
+        <div className="mb-3 lg:mb-4">
           <span
-            className="text-sm font-medium block mb-2"
+            className="text-sm font-medium block mb-1.5 lg:mb-2"
             style={{ color: "var(--text-secondary)" }}
           >
             Active Positions
@@ -1638,7 +1647,7 @@ function DashboardWidget() {
         </div>
 
         {/* Connected Protocols */}
-        <div>
+        {/* <div>
           <span
             className="text-sm font-medium block mb-2"
             style={{ color: "var(--text-secondary)" }}
@@ -1660,8 +1669,18 @@ function DashboardWidget() {
               </span>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
+
+      {/* Disclaimer */}
+      <p
+        className="text-center text-[10px] mt-3"
+        style={{ color: "var(--text-muted)", opacity: 0.7 }}
+      >
+        Dashboard data is simulated for demonstration purposes. Actual portfolio
+        values, P&L, and health factors will vary based on real market
+        conditions.
+      </p>
     </motion.div>
   );
 }
@@ -1676,6 +1695,7 @@ export default function HowItWorksSection() {
   const [deposit, setDeposit] = useState(1000);
   const [asset, setAsset] = useState(0);
   const prevPhaseRef = useRef(0);
+  const isClickScrolling = useRef(false);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -1691,6 +1711,8 @@ export default function HowItWorksSection() {
   const contentY = useTransform(scrollYProgress, [0.92, 1], [0, -30]);
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
+    // Skip intermediate phases during click-initiated scrolls
+    if (isClickScrolling.current) return;
     const clamped = Math.max(0, Math.min(1, v));
     const phase = Math.min(3, Math.floor(clamped * 3.99));
     // Only update state if phase actually changed — prevents scroll jank
@@ -1699,6 +1721,26 @@ export default function HowItWorksSection() {
       setActivePhase(phase);
     }
   });
+
+  const scrollToPhase = (phase: number) => {
+    if (!sectionRef.current) return;
+    // Immediately set the phase so widget switches instantly
+    prevPhaseRef.current = phase;
+    setActivePhase(phase);
+    // Lock scroll listener during smooth scroll
+    isClickScrolling.current = true;
+    const sectionTop = sectionRef.current.offsetTop;
+    const sectionHeight = sectionRef.current.offsetHeight;
+    // Each phase occupies ~25% of the 300vh section
+    const targetScroll = sectionTop + (phase / 4) * sectionHeight;
+    window.scrollTo({ top: targetScroll, behavior: "smooth" });
+    // Unlock after scroll completes — longer on mobile due to taller section
+    const scrollDistance = Math.abs(targetScroll - window.scrollY);
+    const unlockDelay = Math.min(1500, Math.max(800, scrollDistance / 2));
+    setTimeout(() => {
+      isClickScrolling.current = false;
+    }, unlockDelay);
+  };
 
   const renderWidget = () => {
     switch (activePhase) {
@@ -1727,12 +1769,11 @@ export default function HowItWorksSection() {
     <section
       id="how-it-works"
       ref={sectionRef}
-      className="relative"
-      style={{ height: "300vh" }}
+      className="relative h-[700vh] sm:h-[500vh] lg:h-[300vh]"
     >
       {/* Sticky container — offset top for navbar */}
       <div
-        className="sticky top-0 h-screen overflow-hidden"
+        className="sticky top-0 h-screen overflow-x-visible overflow-y-clip"
         style={{
           backgroundColor: "var(--background-alt)",
           willChange: "transform",
@@ -1749,70 +1790,79 @@ export default function HowItWorksSection() {
           style={{ opacity: contentOpacity, y: contentY }}
         >
           {/* Section Header */}
-          <div className="text-center pt-20 pb-4 sm:pb-6 shrink-0">
-            <p className="text-violet-500 text-sm font-semibold tracking-[0.2em] uppercase mb-2">
+          <div className="text-center pt-6 sm:pt-10 lg:pt-16 xl:pt-20 pb-2 sm:pb-3 lg:pb-6 shrink-0">
+            <p className="text-violet-500 text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase mb-1 sm:mb-2">
               How It Works
             </p>
-            <h2 className="text-h3 text-heading mb-2">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl xl:text-h3 text-heading mb-1 sm:mb-2">
               From deposit to deployment
             </h2>
-            <p className="text-subtext text-paragraph max-w-xl mx-auto">
+            <p className="text-xs sm:text-sm lg:text-base text-subtext text-paragraph max-w-xl mx-auto hidden sm:block">
               Here&apos;s how your $1,000 becomes $10,000 of trading power
               across DeFi.
             </p>
           </div>
 
           {/* Desktop: 2 col sticky layout */}
-          <div className="hidden lg:grid grid-cols-[300px_1fr] xl:grid-cols-[340px_1fr] gap-8 xl:gap-12 flex-1 min-h-0 pb-4">
+          <div className="hidden lg:grid grid-cols-[240px_1fr] xl:grid-cols-[320px_1fr] gap-4 xl:gap-12 flex-1 min-h-0 pb-1 lg:pb-2 xl:pb-4">
             {/* Left: Timeline — vertically centered */}
-            <div className="flex items-center overflow-y-auto scrollbar-hide">
-              <TimelinePanel activePhase={activePhase} />
+            <div className="flex items-center overflow-y-auto overflow-x-visible scrollbar-hide pl-3">
+              <TimelinePanel
+                activePhase={activePhase}
+                onPhaseClick={scrollToPhase}
+              />
             </div>
 
             {/* Right: Widget — vertically centered, scrollable if needed */}
-            <div className="flex items-center overflow-y-auto scrollbar-hide">
-              <div className="w-full">
+            <div className="flex items-center justify-center overflow-y-auto scrollbar-hide py-2">
+              <div className="w-full my-auto">
                 <AnimatePresence mode="wait">{renderWidget()}</AnimatePresence>
               </div>
             </div>
           </div>
 
           {/* Mobile: stacked */}
-          <div className="lg:hidden flex-1 overflow-y-auto scrollbar-hide pb-8">
-            {/* Phase indicator */}
-            <div className="flex justify-center gap-2 mb-4">
-              {phases.map((_, i) => (
-                <div
-                  key={i}
-                  className="w-2 h-2 rounded-full transition-all duration-300"
-                  style={{
-                    backgroundColor:
-                      i === activePhase
-                        ? phases[i].accent
-                        : "var(--gauge-track)",
-                    transform: i === activePhase ? "scale(1.3)" : "scale(1)",
-                  }}
-                />
-              ))}
+          <div className="lg:hidden flex-1 flex flex-col min-h-0">
+            {/* Phase indicator — always visible */}
+            <div className="shrink-0">
+              <div className="flex justify-center gap-2 mb-2">
+                {phases.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => scrollToPhase(i)}
+                    className="w-2 h-2 rounded-full transition-all duration-300 cursor-pointer"
+                    style={{
+                      backgroundColor:
+                        i === activePhase
+                          ? phases[i].accent
+                          : "var(--gauge-track)",
+                      transform: i === activePhase ? "scale(1.3)" : "scale(1)",
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Phase title */}
+              <div className="text-center mb-3">
+                <span
+                  className="text-xs font-mono tracking-wider uppercase"
+                  style={{ color: phases[activePhase].accent }}
+                >
+                  Phase {phases[activePhase].phase}
+                </span>
+                <h3
+                  className="text-lg font-semibold"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  {phases[activePhase].title}
+                </h3>
+              </div>
             </div>
 
-            {/* Phase title */}
-            <div className="text-center mb-4">
-              <span
-                className="text-xs font-mono tracking-wider uppercase"
-                style={{ color: phases[activePhase].accent }}
-              >
-                Phase {phases[activePhase].phase}
-              </span>
-              <h3
-                className="text-lg font-semibold"
-                style={{ color: "var(--text-primary)" }}
-              >
-                {phases[activePhase].title}
-              </h3>
+            {/* Widget — scrollable area */}
+            <div className="flex-1 overflow-y-auto scrollbar-hide pb-4">
+              <AnimatePresence mode="wait">{renderWidget()}</AnimatePresence>
             </div>
-
-            <AnimatePresence mode="wait">{renderWidget()}</AnimatePresence>
           </div>
 
           {/* Scroll progress indicator */}

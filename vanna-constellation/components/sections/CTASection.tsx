@@ -188,15 +188,16 @@ export default function CTASection() {
         >
           <motion.a
             href="#"
-            className="px-10 py-4 rounded-xl text-btn-md bg-white text-base-dark font-bold hover:shadow-lg hover:shadow-white/10 transition-shadow"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            className="px-10 py-4 rounded-xl text-btn-md bg-white text-base-dark font-bold opacity-60 cursor-not-allowed"
+            onClick={(e) => e.preventDefault()}
           >
             Launch App
           </motion.a>
           <motion.a
-            href="#"
-            className="px-10 py-4 rounded-xl text-btn-md text-white border border-white/20 hover:bg-white/5 transition-colors"
+            href="https://discord.com/invite/MmK9rsWdzS"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-10 py-4 rounded-xl text-btn-md text-white border border-white/20 hover:bg-white/5 transition-colors cursor-pointer"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >

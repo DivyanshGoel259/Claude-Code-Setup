@@ -118,7 +118,7 @@ function StepCard({ step, index }: { step: (typeof steps)[0]; index: number }) {
       }}
     >
       {/* Timeline */}
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center overflow-visible">
         {/* Icon circle */}
         <motion.div
           className="relative w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 z-10"
@@ -188,7 +188,7 @@ export default function FlowSection() {
   return (
     <section
       id="flow"
-      className="relative py-24 sm:py-32 overflow-hidden"
+      className="relative py-24 sm:py-32"
       style={{ backgroundColor: "var(--surface-alt)" }}
     >
       {/* Three.js Animated Background */}
@@ -224,7 +224,7 @@ export default function FlowSection() {
         </motion.div>
 
         {/* Steps Timeline */}
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto pl-2">
           {steps.map((step, index) => (
             <StepCard key={step.phase} step={step} index={index} />
           ))}

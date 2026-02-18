@@ -17,10 +17,9 @@ const footerLinks = {
     { label: 'Status', href: '#' },
   ],
   Community: [
-    { label: 'Discord', href: '#' },
-    { label: 'Twitter / X', href: '#' },
-    { label: 'Telegram', href: '#' },
-    { label: 'GitHub', href: '#' },
+    { label: 'Twitter / X', href: 'https://x.com/vannaprotocol' },
+    { label: 'Telegram', href: 'https://t.me/vannaprotocol' },
+    { label: 'Discord', href: 'https://discord.com/invite/MmK9rsWdzS' },
   ],
   Legal: [
     { label: 'Terms of Service', href: '#' },
@@ -62,10 +61,9 @@ function GithubIcon() {
 }
 
 const socialLinks = [
-  { icon: TwitterIcon, href: '#', label: 'Twitter' },
-  { icon: DiscordIcon, href: '#', label: 'Discord' },
-  { icon: TelegramIcon, href: '#', label: 'Telegram' },
-  { icon: GithubIcon, href: '#', label: 'GitHub' },
+  { icon: TwitterIcon, href: 'https://x.com/vannaprotocol', label: 'Twitter' },
+  { icon: TelegramIcon, href: 'https://t.me/vannaprotocol', label: 'Telegram' },
+  { icon: DiscordIcon, href: 'https://discord.com/invite/MmK9rsWdzS', label: 'Discord' },
 ];
 
 export default function Footer() {
@@ -105,6 +103,8 @@ export default function Footer() {
                 <a
                   key={social.label}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={social.label}
                   className="w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-200 hover:bg-violet-500/10 hover:text-violet-500"
                   style={{ color: 'var(--text-muted)' }}
