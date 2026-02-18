@@ -6,8 +6,8 @@ import { useTheme } from '@/components/providers/ThemeProvider';
 const footerLinks = {
   Product: [
     { label: 'Launch App', href: '#' },
-    { label: 'Features', href: '#calculator' },
-    { label: 'Dashboard', href: '#dashboard' },
+    { label: 'Features', href: '#' },
+    { label: 'Dashboard', href: '#' },
     { label: 'Documentation', href: '#' },
   ],
   Resources: [
@@ -125,17 +125,22 @@ export default function Footer() {
                 {category}
               </h4>
               <ul className="space-y-3">
-                {links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-body-2 transition-colors duration-200 hover:text-violet-500"
-                      style={{ color: 'var(--text-secondary)' }}
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
+                {links.map((link) => {
+                  const isDisabled = link.href === '#';
+                  return (
+                    <li key={link.label}>
+                      <a
+                        href={link.href}
+                        {...(!isDisabled && { target: '_blank', rel: 'noopener noreferrer' })}
+                        {...(isDisabled && { onClick: (e: React.MouseEvent) => e.preventDefault() })}
+                        className={`text-body-2 transition-colors duration-200 ${isDisabled ? 'cursor-not-allowed opacity-50' : 'hover:text-violet-500 cursor-pointer'}`}
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
